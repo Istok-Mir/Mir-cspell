@@ -5,7 +5,7 @@ from Mir import LanguageServer, mir, deno, LoaderInStatusBar, PackageStorage, co
 from typing import Dict, List, Optional, Tuple, TypedDict
 
 
-server_storage = PackageStorage(__package__, tag='0.0.1', sync_folder="./language-server")
+server_storage = PackageStorage(tag='0.0.1', sync_folder="./language-server")
 
 
 class CspellLanguageServer(LanguageServer):
