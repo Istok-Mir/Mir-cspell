@@ -1,9 +1,8 @@
 from __future__ import annotations
 import sublime_plugin
 from Mir.types import URI, DocumentUri, TextEdit
-from Mir import LanguageServer, mir, deno, ActivityIndicator, PackageStorage, run_command
+from Mir import LanguageServer, mir, deno, LoaderInStatusBar, PackageStorage, run_command
 from typing import Dict, List, Optional, Tuple, TypedDict
-import sublime
 
 
 server_storage = PackageStorage(__package__, tag='0.0.1', sync_folder="./language-server")
@@ -22,7 +21,7 @@ class CspellLanguageServer(LanguageServer):
         server_path = server_storage / "language-server" / "_server" / 'main.cjs'
         server_node_modules = server_storage / "language-server" / "node_modules"
         if not server_node_modules.exists():
-            with ActivityIndicator(sublime.active_window(), f'installing {self.name}'):
+            with LoaderInStatusBar(f'installing {self.name}'):
                 await run_command([deno.path, "install"], cwd=str(server_storage / "language-server"))
 
         async def on_workspace_config_for_document(params: WorkspaceConfigForDocumentRequest) -> WorkspaceConfigForDocumentResponse:
