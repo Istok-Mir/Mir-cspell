@@ -1,7 +1,7 @@
 from __future__ import annotations
 import sublime_plugin
 from Mir.types import URI, DocumentUri, TextEdit
-from Mir import LanguageServer, mir, deno, LoaderInStatusBar, PackageStorage, run_command
+from Mir import LanguageServer, mir, deno, LoaderInStatusBar, PackageStorage, command
 from typing import Dict, List, Optional, Tuple, TypedDict
 
 
@@ -22,7 +22,7 @@ class CspellLanguageServer(LanguageServer):
         server_node_modules = server_storage / "language-server" / "node_modules"
         if not server_node_modules.exists():
             with LoaderInStatusBar(f'installing {self.name}'):
-                await run_command([deno.path, "install"], cwd=str(server_storage / "language-server"))
+                await command([deno.path, "install"], cwd=str(server_storage / "language-server"))
 
         async def on_workspace_config_for_document(params: WorkspaceConfigForDocumentRequest) -> WorkspaceConfigForDocumentResponse:
             # It looks like this method is necessary to enable code actions...
