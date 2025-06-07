@@ -1,6 +1,6 @@
 from __future__ import annotations
 import sublime_plugin
-from Mir.types import URI, DocumentUri, TextEdit
+from Mir.types.lsp import URI, DocumentUri, TextEdit
 from Mir import LanguageServer, mir, deno, LoaderInStatusBar, PackageStorage, command
 from typing import Dict, List, Optional, Tuple, TypedDict
 
