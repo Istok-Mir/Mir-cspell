@@ -1,11 +1,8 @@
 from __future__ import annotations
 import sublime_plugin
 from Mir.types import URI, DocumentUri, TextEdit
-from Mir import LanguageServer, mir
+from Mir import LanguageServer, mir, deno, ActivityIndicator, PackageStorage, run_command
 from typing import Dict, List, Optional, Tuple, TypedDict
-from Mir.runtime import deno
-from Mir.api import ActivityIndicator
-from Mir.package_storage import PackageStorage, run_command
 import sublime
 
 
