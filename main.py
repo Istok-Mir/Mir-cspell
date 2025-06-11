@@ -5,7 +5,16 @@ from Mir import LanguageServer, mir, deno, LoaderInStatusBar, PackageStorage, co
 from typing import Dict, List, Optional, Tuple, TypedDict
 
 
-server_storage = PackageStorage(tag='0.0.1', sync_folder="./language-server")
+server_storage = PackageStorage(tag='0.0.1')
+server_path = server_storage / "language-server" / "_server" / 'main.cjs'
+
+async def package_storage_setup():
+    if server_path.exists():
+        return
+    await deno.setup()
+    server_storage.copy("./language-server")
+    with LoaderInStatusBar(f'installing cSpell'):
+        await command([deno.path, "install"], cwd=str(server_storage / "language-server"))
 
 
 class CspellLanguageServer(LanguageServer):
@@ -17,12 +26,7 @@ class CspellLanguageServer(LanguageServer):
 
     async def activate(self):
         # setup runtime and install dependencies
-        await deno.setup()
-        server_path = server_storage / "language-server" / "_server" / 'main.cjs'
-        server_node_modules = server_storage / "language-server" / "node_modules"
-        if not server_node_modules.exists():
-            with LoaderInStatusBar(f'installing {self.name}'):
-                await command([deno.path, "install"], cwd=str(server_storage / "language-server"))
+        await package_storage_setup()
 
         async def on_workspace_config_for_document(params: WorkspaceConfigForDocumentRequest) -> WorkspaceConfigForDocumentResponse:
             # It looks like this method is necessary to enable code actions...
