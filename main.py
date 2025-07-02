@@ -39,8 +39,9 @@ class CspellLanguageServer(LanguageServer):
             }
         self.on_request('onWorkspaceConfigForDocumentRequest', on_workspace_config_for_document)
 
-        await self.connect('stdio', {
-            'cmd': [deno.path, 'run', '-A', server_path, '--stdio'],
+        await self.initialize({
+            'communication_channel': 'stdio',
+            'command': [deno.path, 'run', '-A', server_path, '--stdio'],
         })
 
 
